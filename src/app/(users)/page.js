@@ -11,8 +11,15 @@ export default async function Home() {
   const res = await fetch("https://star-backend-ragw.onrender.com/products", {
     cache: "no-store",
   });
+  
+  if (!res.ok) {
+    console.error(`Failed to fetch products: ${res.statusText}`);
+    return;  // Stop execution if the request fails
+  }
+  
   const data = await res.json();
   console.log(data);
+  
   return (
     <>
       <Banner />
