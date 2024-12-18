@@ -10,7 +10,7 @@ const CategoryList = () => {
   // Define fetchCategories function outside useEffect
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3000/categories");
+      const response = await fetch("https://star-backend-ragw.onrender.com/categories");
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
       setCategories(data); // Set categories data to state
@@ -26,7 +26,7 @@ const CategoryList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/categories/${id}`, {
+      await fetch(`https://star-backend-ragw.onrender.com/categories/${id}`, {
         method: "DELETE",
       });
       setCategories(categories.filter((category) => category._id !== id));

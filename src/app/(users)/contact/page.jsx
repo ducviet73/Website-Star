@@ -24,7 +24,7 @@ const ContactPage = () => {
             e.preventDefault();
         
             try {
-                const response = await axios.post('http://localhost:3000/users/contact', formData);
+                const response = await axios.post('https://star-backend-ragw.onrender.com/users/contact', formData);
                 alert(response.data.message); // Hiển thị thông báo thành công
                 router.push('/'); // Chuyển hướng về trang chủ
             } catch (error) {

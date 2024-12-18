@@ -7,7 +7,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Category() {
 
-  const { data, error } = useSWR("http://localhost:3000/categories", fetcher, { revalidateOnFocus: false });
+  const { data, error } = useSWR("https://star-backend-ragw.onrender.com/categories", fetcher, { revalidateOnFocus: false });
 
   if (error) return <p>Error: {error.message}</p>;
 

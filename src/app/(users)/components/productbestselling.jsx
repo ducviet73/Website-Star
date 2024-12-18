@@ -9,7 +9,7 @@ export default function ProductBestselling() {
     // Fetch data when the component mounts
     async function fetchData() {
       try {
-        const res = await fetch("http://localhost:3000/products/bestselling", { cache: 'no-store' });
+        const res = await fetch("https://star-backend-ragw.onrender.com/products/bestselling", { cache: 'no-store' });
         const result = await res.json();
         setData(result);
       } catch (error) {

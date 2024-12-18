@@ -31,8 +31,8 @@ const UserForm = ({ userId, users, onUserUpdated, onClose }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const request = userId
-            ? axios.put(`http://localhost:3000/users/${userId}`, user) // Edit user
-            : axios.post('http://localhost:3000/users', user); // Add new user
+            ? axios.put(`https://star-backend-ragw.onrender.com/users/${userId}`, user) // Edit user
+            : axios.post('https://star-backend-ragw.onrender.com/users', user); // Add new user
 
         request
             .then(response => {
@@ -135,7 +135,7 @@ const RoleUpdateForm = ({ userId, onRoleUpdated, onClose }) => {
 
     useEffect(() => {
         if (userId) {
-            axios.get(`http://localhost:3000/users/${userId}`)
+            axios.get(`https://star-backend-ragw.onrender.com/users/${userId}`)
                 .then(response => setRole(response.data.role))
                 .catch(error => console.error("Có lỗi xảy ra:", error));
         }
@@ -147,7 +147,7 @@ const RoleUpdateForm = ({ userId, onRoleUpdated, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:3000/users/${userId}`, { role })
+        axios.put(`https://star-backend-ragw.onrender.com/users/${userId}`, { role })
             .then(response => {
                 onRoleUpdated();
             })
@@ -187,7 +187,7 @@ const UserListWithRoleUpdate = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/users');
+                const response = await axios.get('https://star-backend-ragw.onrender.com/users');
                 const userList = response.data;
                 setUsers(userList);
                 setUserStats({
@@ -209,7 +209,7 @@ const UserListWithRoleUpdate = () => {
     const deleteUser = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
             try {
-                await axios.delete(`http://localhost:3000/users/${id}`);
+                await axios.delete(`https://star-backend-ragw.onrender.com/users/${id}`);
 
                 const userToDelete = users.find(user => user._id === id);
                 if (userToDelete) {

@@ -19,7 +19,7 @@ export default function Products() {
 
   const fetchProducts = async (page = 1, limit = 4) => {
     try {
-      const res = await fetch(`http://localhost:3000/products/page?page=${page}&limit=${limit}`, {
+      const res = await fetch(`https://star-backend-ragw.onrender.com/products/page?page=${page}&limit=${limit}`, {
         cache: "no-store",
       });
       if (!res.ok) {

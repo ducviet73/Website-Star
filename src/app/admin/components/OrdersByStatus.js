@@ -10,7 +10,7 @@ const OrdersByStatus = ({ status }) => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/orders/status/${status}`);
+                const response = await axios.get(`https://star-backend-ragw.onrender.com/orders/status/${status}`);
                 setOrders(response.data);
             } catch (err) {
                 setError('Không tìm thấy đơn hàng theo trạng thái.');

@@ -190,7 +190,7 @@ const CheckoutPage = () => {
                                     <div className="row">
                                         <div className="col-4">
                                         <img
-                                        src={item.image.startsWith('http') ? item.image : `http://localhost:3000/${item.image}`}
+                                        src={item.image.startsWith('http') ? item.image : `https://star-backend-ragw.onrender.com/${item.image}`}
                                         alt={item.image}
                                             style={{ height: "250px", width: "100%" }}
                                         />                                        </div>

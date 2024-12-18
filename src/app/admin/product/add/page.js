@@ -56,7 +56,7 @@ const validationSchema = Yup.object({
 
 export default function ProductAdd() {
     // Fetch categories
-    const { data: categories, error: categoriesError } = useSWR("http://localhost:3000/categories", fetcher);
+    const { data: categories, error: categoriesError } = useSWR("https://star-backend-ragw.onrender.com/categories", fetcher);
 
     // Formik setup
     const formik = useFormik({
@@ -97,7 +97,7 @@ export default function ProductAdd() {
             console.log('FormData to be sent:', data);
     
             try {
-                const response = await fetch('http://localhost:3000/products', {
+                const response = await fetch('https://star-backend-ragw.onrender.com/products', {
                     method: 'POST',
                     body: data,
                 });
