@@ -10,7 +10,7 @@ const UserOrders = ({ userId }) => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/orders/${userId}`);
+                const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/${userId}`);
                 setOrders(response.data);
             } catch (err) {
                 setError('Không tìm thấy đơn hàng.');

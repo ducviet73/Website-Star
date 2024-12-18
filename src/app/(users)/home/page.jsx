@@ -1,5 +1,5 @@
 import React from "react";
-import Pro from "../components/Pro";  // Make sure the path is correct
+import Pro from "../components/pro";  // Make sure the path is correct
 
 export default function Homene() {
   return (

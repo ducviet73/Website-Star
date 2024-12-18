@@ -89,7 +89,7 @@ const CheckoutPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/orders', {
+            const response = await fetch('https://star-backend-z1cm.onrender.com/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -230,7 +230,7 @@ const CheckoutPage = () => {
                                      <div className="row">
                                          <div className="col-4">
                                         <img
-                                        src={item.image.startsWith('http') ? item.image : `http://localhost:3000/${item.image}`}
+                                        src={item.image.startsWith('http') ? item.image : `https://star-backend-z1cm.onrender.com/${item.image}`}
                                         alt={item.image}
                                             style={{ height: "250px", width: "100%" }}
                                          />                                        </div>

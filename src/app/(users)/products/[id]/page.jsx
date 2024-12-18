@@ -21,16 +21,16 @@ export default function Detail({ params }) {
     const user = useSelector((state) => state.auth.user);
 
      const { data, error, isLoading } = useSWR(
-        `http://localhost:3000/products/detail/${params.id}`,
+        `https://star-backend-z1cm.onrender.com/products/detail/${params.id}`,
         fetcher
     );
      const { data: reviewsData, error: reviewsError, isLoading: reviewsLoading , mutate : mutateReviews} = useSWR(
-        `http://localhost:3000/api/reviews/${params.id}`,
+        `https://star-backend-z1cm.onrender.com/api/reviews/${params.id}`,
         fetcher
     );
 
       const { data: promotionalProductData} = useSWR(
-         `http://localhost:3000/api/promotional-products`,
+         `https://star-backend-z1cm.onrender.com/api/promotional-products`,
          fetcher
       );
 
@@ -90,7 +90,7 @@ export default function Detail({ params }) {
            }
        mutateReviews( [...reviewsData, newReviewObject], false)
 
-         const response = await fetch(`http://localhost:3000/api/reviews`, {
+         const response = await fetch(`https://star-backend-z1cm.onrender.com/api/reviews`, {
              method: "POST",
              headers: {
                  "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export default function Detail({ params }) {
           <div className="detail_temple_2">
             <div className="detail_temple_2_img_main">
               <img
-                 src={data.image.startsWith('http') ? data.image : `http://localhost:3000/${data.image}` }
+                 src={data.image.startsWith('http') ? data.image : `https://star-backend-z1cm.onrender.com/${data.image}` }
                  alt={data.name} style={{height:"550px"}}
               />
             </div>

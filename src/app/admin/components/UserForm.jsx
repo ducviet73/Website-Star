@@ -20,7 +20,7 @@ const UserForm = ({ userId, onUserUpdated }) => {
         if (userId) {
             setLoading(true); // Bắt đầu loading
             axios
-                .get(`http://localhost:3000/users/${userId}`)
+                .get(`https://star-backend-z1cm.onrender.com/users/${userId}`)
                 .then(response => {
                     setUser(response.data);
                     setLoading(false); // Dừng loading
@@ -42,8 +42,8 @@ const UserForm = ({ userId, onUserUpdated }) => {
         setUpdating(true); // Bắt đầu cập nhật
 
         const request = userId
-            ? axios.put(`http://localhost:3000/users/${userId}`, user) // Cập nhật người dùng
-            : axios.post('http://localhost:3000/users', user); // Thêm mới người dùng
+            ? axios.put(`https://star-backend-z1cm.onrender.com/users/${userId}`, user) // Cập nhật người dùng
+            : axios.post('https://star-backend-z1cm.onrender.com/users', user); // Thêm mới người dùng
 
         request
             .then((response) => {

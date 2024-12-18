@@ -16,7 +16,7 @@ export default function Info() {
     const [user, setUser] = useState({});
     useEffect(() => {
         const getUser = async () => {
-            const res = await fetch('http://localhost:3000/users/detailuser', {
+            const res = await fetch('https://star-backend-z1cm.onrender.com/users/detailuser', {
                 headers: {
                     Authorization: `Bearer ${tokenValue}`,
                 },

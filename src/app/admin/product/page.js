@@ -15,7 +15,7 @@ export default function Product() {
 
     // Fetch data based on the current page
     const { data: productData, error, isLoading } = useSWR(
-        `http://localhost:3000/products/page?page=${currentPage}&limit=5`,
+        `https://star-backend-z1cm.onrender.com/products/page?page=${currentPage}&limit=5`,
         fetcher,
         {
             refreshInterval: 10000, // Auto-refresh every 10 seconds
@@ -24,7 +24,7 @@ export default function Product() {
 
     const fetchPromotionalProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/promotional-products');
+            const response = await axios.get('https://star-backend-z1cm.onrender.com/api/promotional-products');
             setPromotionalProducts(response.data);
         } catch (error) {
             console.error('Error fetching promotional products:', error);
@@ -33,7 +33,7 @@ export default function Product() {
 
     const fetchPromotions = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/promotions');
+            const response = await axios.get('https://star-backend-z1cm.onrender.com/api/promotions');
             setPromotions(response.data);
         } catch (error) {
             console.error('Error fetching promotions:', error);
@@ -48,7 +48,7 @@ export default function Product() {
     const deleteItem = async (itemId) => {
         if (confirm('Bạn có chắc chắn muốn xóa không?')) {
             try {
-                const response = await fetch(`http://localhost:3000/products/${itemId}`, {
+                const response = await fetch(`https://star-backend-z1cm.onrender.com/products/${itemId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export default function Product() {
 
     const handleAssignPromotion = async (productId, promotionId) => {
         try {
-            const response = await fetch('http://localhost:3000/api/promotional-products', {
+            const response = await fetch('https://star-backend-z1cm.onrender.com/api/promotional-products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default function Product() {
 
   const handleRemovePromotion = async (promotionalProductId,productId) => {
         try {
-             const response = await fetch(`http://localhost:3000/api/promotional-products/${promotionalProductId}`,{
+             const response = await fetch(`https://star-backend-z1cm.onrender.com/api/promotional-products/${promotionalProductId}`,{
                  method: 'DELETE',
                  headers: {
                      'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ export default function Product() {
                             return (
                                 <tr key={_id}>
                                     <td style={{ width: "64px" }}>
-                                        <img src={`http://localhost:3000/img/${image}`} alt={name} className="w-100" />
+                                        <img src={`https://star-backend-z1cm.onrender.com/img/${image}`} alt={name} className="w-100" />
                                     </td>
                                     <td className="text-start">
                                         <strong>{name}</strong>

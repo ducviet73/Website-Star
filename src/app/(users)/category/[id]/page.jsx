@@ -10,7 +10,7 @@ export default function Detail({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/products/category/${params.id}`,
+        const response = await fetch(`https://star-backend-z1cm.onrender.com/products/category/${params.id}`,
           { cache: "no-store" }
         );
         const result = await response.json();

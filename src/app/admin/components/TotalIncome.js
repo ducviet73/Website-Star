@@ -11,7 +11,7 @@ const TotalIncome = () => {
     useEffect(() => {
         const fetchTotalIncome = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/orders/incomes/total');
+                const response = await axios.get('https://star-backend-z1cm.onrender.com/orders/incomes/total');
                 setTotalIncome(response.data.total);
             } catch (err) {
                 setError('Không thể lấy tổng doanh thu.');

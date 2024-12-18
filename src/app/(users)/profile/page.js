@@ -28,7 +28,7 @@ const Profile = () => {
   useEffect(() => {
     if (token && user) {
       // Get user data from API using the token
-      axios.get(`http://localhost:3000/users/${user._id}`, {
+      axios.get(`https://star-backend-z1cm.onrender.com/users/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(response => {
@@ -74,7 +74,7 @@ const Profile = () => {
     }
 
     // Send PUT request to update user data
-    axios.put(`http://localhost:3000/users/${user._id}`, updatedData, {
+    axios.put(`https://star-backend-z1cm.onrender.com/users/${user._id}`, updatedData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data' // Specify that it's a file upload

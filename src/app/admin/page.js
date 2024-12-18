@@ -16,7 +16,7 @@ export default function Dashboard() {
     useEffect(() => {
         if (user?._id) {
             // Fetch user-specific orders
-            axios.get(`http://localhost:3000/orders/user/${user._id}`)
+            axios.get(`https://star-backend-z1cm.onrender.com/orders/user/${user._id}`)
                 .then(response => {
                     setOrders(response.data);
                 })
@@ -26,7 +26,7 @@ export default function Dashboard() {
                 });
 
             // Fetch products count
-            axios.get(`http://localhost:3000/products/count`)
+            axios.get(`https://star-backend-z1cm.onrender.com/products/count`)
                 .then(response => {
                     setProductsCount(response.data.count);
                 })
@@ -36,7 +36,7 @@ export default function Dashboard() {
                 });
 
             // Fetch customers count
-            axios.get(`http://localhost:3000/users/count`)
+            axios.get(`https://star-backend-z1cm.onrender.com/users/count`)
                 .then(response => {
                     setCustomersCount(response.data.count);
                 })
@@ -46,7 +46,7 @@ export default function Dashboard() {
                 });
 
             // Fetch total incomes
-            axios.get(`http://localhost:3000/orders/incomes/total`)
+            axios.get(`https://star-backend-z1cm.onrender.com/orders/incomes/total`)
                 .then(response => {
                     setIncomes(response.data.total);
                 })
@@ -56,7 +56,7 @@ export default function Dashboard() {
                 });
 
           
-            // axios.get('http://localhost:3000/orders/total-orders')
+            // axios.get('https://star-backend-z1cm.onrender.com/orders/total-orders')
             //     .then(response => {
             //         setDeliveredOrdersCount(response.data.length);
             //     })

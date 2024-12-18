@@ -74,7 +74,7 @@ const CartPage = () => {
                             <tr className="thanhtoan-all" key={`${item._id}-${item.size}-${item.color}`}>
                                 <td className="thanhtoan-1">
                                 <img
-                                    src={item.image.startsWith('http') ? item.image : `http://localhost:3000/${item.image}`}
+                                    src={item.image.startsWith('http') ? item.image : `https://star-backend-z1cm.onrender.com/${item.image}`}
                                     alt={item.name}
                                     />
                                 </td>

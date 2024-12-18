@@ -60,10 +60,10 @@ export default function ProductEdit({ params }) {
     const productId = params.id; // Assume the product ID is passed as a route parameter
 
     // Fetch categories
-    const { data: categories, error: categoriesError } = useSWR("http://localhost:3000/categories", fetcher);
+    const { data: categories, error: categoriesError } = useSWR("https://star-backend-z1cm.onrender.com/categories", fetcher);
 
     // Fetch product details
-    const { data: product, error: productError } = useSWR(productId ? `http://localhost:3000/products/detail/${productId}` : null, fetcher);
+    const { data: product, error: productError } = useSWR(productId ? `https://star-backend-z1cm.onrender.com/products/detail/${productId}` : null, fetcher);
 
     // Formik setup
     const formik = useFormik({
@@ -107,7 +107,7 @@ export default function ProductEdit({ params }) {
 
 
             try {
-                const response = await fetch(`http://localhost:3000/products/${productId}`, {
+                const response = await fetch(`https://star-backend-z1cm.onrender.com/products/${productId}`, {
                     method: 'PUT',
                     body: data,
                 });
@@ -295,7 +295,7 @@ if (productError) {
                         <div className="card-body">
                             <h6 className="pb-3 border-bottom">Images</h6>
                             <label className="form-label">ảnh sản phẩm cũ</label>
-                                <img src={`http://localhost:3000/img/${product.image}`}  className="w-50" alt="Current Product" />
+                                <img src={`https://star-backend-z1cm.onrender.com/img/${product.image}`}  className="w-50" alt="Current Product" />
                             <div className="mb-3">
                                 <label htmlFor="image" className="form-label">Product Image *</label>
                                 <input
@@ -316,7 +316,7 @@ if (productError) {
                                     </>
                                 ) : product.image ? (
                                     <img
-                                        src={`http://localhost:3000/img/${product.image}`}
+                                        src={`https://star-backend-z1cm.onrender.com/img/${product.image}`}
                                         className="w-50"
                                         alt="Current Product"
                                     />

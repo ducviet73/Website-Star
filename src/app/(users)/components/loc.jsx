@@ -9,7 +9,7 @@ export default function loc() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const res = await fetch('http://localhost:3000/products');
+      const res = await fetch('https://star-backend-z1cm.onrender.com/products');
       const newProducts = await res.json();
       setProducts(newProducts);
     }

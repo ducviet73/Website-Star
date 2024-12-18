@@ -11,7 +11,7 @@ export default function Pro({ key }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/products/${key}`, { cache: "no-store" });
+        const response = await fetch(`https://star-backend-z1cm.onrender.com/products/${key}`, { cache: "no-store" });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -41,7 +41,7 @@ export default function Pro({ key }) {
             <div className="nav-product-item">
               <div className="nav-product-item-img">
                 <a href="#">
-                  <img src={`http://localhost:3000/img/${product.image}`} alt={product.name} />
+                  <img src={`https://star-backend-z1cm.onrender.com/img/${product.image}`} alt={product.name} />
                 </a>
               </div>
               <div className="nav-product-item-category">

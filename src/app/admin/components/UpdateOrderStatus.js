@@ -12,7 +12,7 @@ const UpdateOrderStatus = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.put(`http://localhost:3000/orders/${orderId}/status`, { status });
+            await axios.put(`https://star-backend-z1cm.onrender.com/orders/${orderId}/status`, { status });
             setMessage('Trạng thái đơn hàng đã được cập nhật.');
         } catch (err) {
             setMessage('Lỗi khi cập nhật trạng thái đơn hàng.');

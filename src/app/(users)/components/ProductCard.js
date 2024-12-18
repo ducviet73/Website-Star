@@ -17,7 +17,7 @@ function ProductCard({ data }) {
     useEffect(() => {
         const fetchPromotionalProducts = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/promotional-products');
+            const response = await fetch('https://star-backend-z1cm.onrender.com/api/promotional-products');
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -90,7 +90,7 @@ function ProductCard({ data }) {
               <div className="nav-product-item-img">
                   <Link href={`/products/${_id}`}>
                     <img
-                      src={image.startsWith('http') ? image : `http://localhost:3000/${image}`}
+                      src={image.startsWith('http') ? image : `https://star-backend-z1cm.onrender.com/${image}`}
                       alt={name}
                       style={{ height: "250px", width: "100%" }}
                     />

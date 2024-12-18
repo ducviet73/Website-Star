@@ -17,7 +17,7 @@ const AdminOrderManagement = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/orders");
+        const response = await axios.get("https://star-backend-z1cm.onrender.com/orders");
         setOrders(response.data);
         setFilteredOrders(response.data);
       } catch (error) {
@@ -30,7 +30,7 @@ const AdminOrderManagement = () => {
 
     const fetchTotalIncome = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/orders/incomes/total");
+        const response = await axios.get("https://star-backend-z1cm.onrender.com/orders/incomes/total");
         setTotalIncome(response.data.total);
       } catch (error) {
         console.error("Error fetching total income:", error);
@@ -46,7 +46,7 @@ const AdminOrderManagement = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       console.log("Updating order", orderId, "to status", newStatus); // Debugging log
-      const response = await fetch(`http://localhost:3000/orders/${orderId}/status`, {
+      const response = await fetch(`https://star-backend-z1cm.onrender.com/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const AdminOrderManagement = () => {
   const handleDeleteOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
       try {
-        await axios.delete(`http://localhost:3000/orders/${orderId}`);
+        await axios.delete(`https://star-backend-z1cm.onrender.com/orders/${orderId}`);
         setOrders(orders.filter((order) => order._id !== orderId));
         if (selectedOrder && selectedOrder._id === orderId) {
           setSelectedOrder(null);
@@ -87,7 +87,7 @@ const AdminOrderManagement = () => {
   // Filter orders by status
   const handleFilterByStatus = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/orders/status/${status}`);
+      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/status/${status}`);
       setFilteredOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders by status:", error);
@@ -98,7 +98,7 @@ const AdminOrderManagement = () => {
   // Filter orders by date
   const handleFilterByDate = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/orders/date/${date}`);
+      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/date/${date}`);
       setFilteredOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders by date:", error);
