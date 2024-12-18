@@ -16,7 +16,7 @@ const VerifyOtpPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('https://star-backend-ragw.onrender.com/users/verify-otp', { email, otp });
+            const { data } = await axios.post('http://localhost:3000/users/verify-otp', { email, otp });
             if (data.token && data.user) {
                 // Lưu thông tin người dùng vào Redux
                 dispatch(loginSuccess(data));

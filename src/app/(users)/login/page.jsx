@@ -18,7 +18,7 @@ const Login = () => {
 
     const handleLogin = async (data) => {
         try {
-            const endpoint = "https://star-backend-ragw.onrender.com/users/login"; // Endpoint đăng nhập
+            const endpoint = "http://localhost:3000/users/login"; // Endpoint đăng nhập
     
             const response = await axios.post(endpoint, {
                 email: data.email,
@@ -38,7 +38,7 @@ const Login = () => {
 
     const handleForgotPassword = async () => {
         try {
-            const response = await axios.post("https://star-backend-ragw.onrender.com/users/forgot-password", { email });
+            const response = await axios.post("http://localhost:3000/users/forgot-password", { email });
             if (response.data) {
                 alert("Link reset mật khẩu đã được gửi vào email của bạn!");
                 setShowForgotPassword(false);

@@ -6,7 +6,7 @@ export default async function Search({ searchParams }) {
     console.log(searchParams);
     
     try {
-        const res = await fetch(`https://star-backend-ragw.onrender.com/products/search/${keyword}`, { cache: 'no-store' });
+        const res = await fetch(`http://localhost:3000/products/search/${keyword}`, { cache: 'no-store' });
         
         // Kiểm tra nếu có lỗi khi fetch
         if (!res.ok) {

@@ -11,7 +11,7 @@ const OrdersByDate = ({ date }) => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get(`https://star-backend-ragw.onrender.com/orders/date/${date}`);
+                const response = await axios.get(`http://localhost:3000/orders/date/${date}`);
                 setOrders(response.data);
             } catch (err) {
                 setError('Không tìm thấy đơn hàng theo ngày.');

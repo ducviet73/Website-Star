@@ -11,7 +11,7 @@ export async function middleware(request) {
   }
 
   // Gọi đến API xác thực token
-  const res = await fetch('https://star-backend-ragw.onrender.com/checktoken', {
+  const res = await fetch('http://localhost:3000/checktoken', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

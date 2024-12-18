@@ -18,7 +18,7 @@ const CategoryForm = ({ category, onSuccess }) => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch(`https://star-backend-ragw.onrender.com/categories${isEditing ? `/${category._id}` : ''}`, {
+            const response = await fetch(`http://localhost:3000/categories${isEditing ? `/${category._id}` : ''}`, {
                 method: isEditing ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -25,34 +25,29 @@ const CheckoutPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    console.log("paymentMethod",paymentMethod)
     const total = useMemo(() => 
         cartItems.reduce((total, item) => total + item.price * item.quantity, 0), 
         [cartItems]
     );
-    
 
     useEffect(() => {
-        // Lấy dữ liệu từ API
+        // Fetch data from the API
         axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
             .then(response => {
                 const data = response.data;
                 setCities(data);
             })
-            .catch(error => console.error('Lỗi khi lấy dữ liệu:', error));
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
-
 
     const handleCityChange = (e) => {
         const cityId = e.target.value;
         setSelectedCity(cityId);
         const selectedCityObj = cities.find(city => city.Id === cityId);
-        if (selectedCityObj) {
-            setDistricts(selectedCityObj.Districts);
-            setWards([]);
-            setSelectedDistrict('');
-            setSelectedWard('');
-        }
+        setDistricts(selectedCityObj ? selectedCityObj.Districts : []);
+        setWards([]);
+        setSelectedDistrict('');
+        setSelectedWard('');
     };
     
 
@@ -70,9 +65,52 @@ const CheckoutPage = () => {
             setErrorMessage('Please provide all required information.');
             return;
         }
-    
+
         setErrorMessage('');
         setIsSubmitting(true);
+
+        const orderDetails = {
+            userId: user?._id,
+            totalAmount: total,
+            shippingAddress: {
+                street: shippingAddress,
+                ward: wards.find(ward => ward.Id === selectedWard)?.Name || '',
+                district: districts.find(district => district.Id === selectedDistrict)?.Name || '',
+                city: cities.find(city => city.Id === selectedCity)?.Name || ''
+            },
+            paymentMethod,
+            status: 'pending',
+            details: cartItems.map(item => ({
+                productId: item._id,
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            }))
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderDetails)
+            });
+
+            if (response.ok) {
+                dispatch(clearCart());
+                alert("Cảm ơn bạn đã đặt hàng! Chúng tôi đã gửi một email xác nhận tới địa chỉ của bạn cùng với hóa đơn..");
+                router.push('/orders');
+            } else {
+                const data = await response.json();
+                setErrorMessage(data.error || 'Failed to submit order');
+            }
+        } catch (error) {
+            console.error('Error submitting order:', error);
+            setErrorMessage('Error submitting order. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -88,7 +126,7 @@ const CheckoutPage = () => {
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
-                        <label htmlFor="customerName">Tên Khách Hàng</label>
+                        <label htmlFor="customerName">Tên khách hàng</label>
                         <input
                             type="text"
                             className="form-control"
@@ -98,7 +136,7 @@ const CheckoutPage = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="customerEmail">Email Khách Hàng</label>
+                        <label htmlFor="customerEmail">Email khách hàng</label>
                         <input
                             type="email"
                             className="form-control"
@@ -107,8 +145,9 @@ const CheckoutPage = () => {
                             onChange={(e) => setCustomerEmail(e.target.value)}
                             required
                         />
-                    </div><div className="form-group">
-                        <label htmlFor="shippingAddress">Địa Chỉ Giao Hàng</label>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="shippingAddress">Địa chỉ cụ thể</label>
                         <input
                             type="text"
                             className="form-control"
@@ -119,101 +158,99 @@ const CheckoutPage = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="city">Thành Phố</label>
+                        <label htmlFor="city">Thành phố</label>
                         <select
-                        className="form-control"
-                        id="city"
-                        value={selectedCity}
-                        onChange={handleCityChange}
-                    >
-                        <option value="">Chọn Thành Phố</option>
-                        {cities.map(city => (
-                            <option key={city.Id} value={city.Id}>{city.Name}</option>
-                        ))}
-                    </select>
-                    
+                            className="form-control"
+                            id="city"
+                            value={selectedCity}
+                            onChange={handleCityChange}
+                        >
+                            <option value="">Chọn thành phố</option>
+                            {cities.map(city => (
+                                <option key={city.Id} value={city.Id}>{city.Name}</option>
+                            ))}
+
+                        </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="district">Quận/Huyện</label>
+                        <label htmlFor="district">Huyện</label>
                         <select
                             className="form-control"
                             id="district"
                             value={selectedDistrict}
                             onChange={handleDistrictChange}
                         >
-                            <option value="">Chọn Quận/Huyện</option>
+                            <option value="">Chọn Huyện</option>
                             {districts.map(district => (
                                 <option key={district.Id} value={district.Id}>{district.Name}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="ward">Phường/Xã</label>
+                        <label htmlFor="ward">Phường</label>
                         <select
                             className="form-control"
                             id="ward"
                             value={selectedWard}
                             onChange={(e) => setSelectedWard(e.target.value)}
                         >
-                            <option value="">Chọn Phường/Xã</option>
+                            <option value="">Chọn Phường</option>
                             {wards.map(ward => (
                                 <option key={ward.Id} value={ward.Id}>{ward.Name}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="paymentMethod">Phương Thức Thanh Toán</label>
+                        <label htmlFor="paymentMethod">Thanh toán</label>
                         <select
                             className="form-control"
                             id="paymentMethod"
                             value={paymentMethod}
-                            onChange={(e) => setPaymentMethod(e.target.value)}required
-                            >
-                                <option value="">Chọn Phương Thức Thanh Toán</option>
-                                <option value="cash">Thanh Toán Khi Nhận Hàng</option>
-                                <option value="card">Thanh Toán Qua Thẻ</option>
-                            </select>
-                        </div>
-                        <button 
-                            className="btn btn-primary"
-                            onClick={handleCheckout}
-                            disabled={isSubmitting}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            required
                         >
-                            {isSubmitting ? 'Đang Gửi...' : 'Đặt Hàng'}
-                        </button>
+                            <option value="">Chọn phương thức thanh toán</option>
+                            <option value="cash">Tiền mặt</option>
+                            <option value="card">Chuyển khoản</option>
+                        </select>
                     </div>
-                    <div className="col-md-6">
+                    <button 
+                        className="btn btn-primary"
+                        onClick={handleCheckout}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? 'Đang gửi...' : 'Đặt hàng'}
+                    </button>
+                </div>
+                <div className="col-md-6">
                         <h2>Giỏ Hàng</h2>
                         <div className="cart-items">
                             {cartItems.map((item, index) => (
                                 <div key={index} className="cart-item">
-                                    <div className="row">
-                                        <div className="col-4">
+                                     <div className="row">
+                                         <div className="col-4">
                                         <img
-                                        src={item.image.startsWith('http') ? item.image : `https://star-backend-ragw.onrender.com/${item.image}`}
+                                        src={item.image.startsWith('http') ? item.image : `http://localhost:3000/${item.image}`}
                                         alt={item.image}
                                             style={{ height: "250px", width: "100%" }}
-                                        />                                        </div>
-                                        <div className="col-8">
+                                         />                                        </div>
+                                         <div className="col-8">
                                             <h5>{item.name}</h5>
                                             <p>Số lượng: {item.quantity}</p>
-                                            <p>Giá: {item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                                             <p>Giá: {item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
                                             </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="total-amount">
+                                     </div>
+                                 </div>
+                             ))}
+                         </div>                         <div className="total-amount">
                             <h4 style={{marginTop: "10px"}}>
                                 Tổng Tiền: {total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} 
-                            </h4>
-                        </div>
-                    </div>
+                           </h4>
+                         </div> 
                 </div>
             </div>
-        );
-    };
-    
-    export default CheckoutPage;
+        </div>
+    );
+};
 
-
+export default CheckoutPage;
