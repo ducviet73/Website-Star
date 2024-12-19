@@ -171,7 +171,7 @@ function ProductCard({ data }) {
                     className="detail_addtocart"
                     onClick={() => handleAddToCart(_id, quantity, selectedSize, selectedColor)}
                   >
-                    Thêm vào giỏ hàng
+                    Add to Cart
                   </button>
                 </div>
                 <div className="nav-product-item-button-buy-now">
@@ -183,7 +183,7 @@ function ProductCard({ data }) {
         );
       })
      ) : (
-        <p>Không có sản phẩm</p>
+        <p>No product data</p>
         )}
     </>
   );

@@ -26,7 +26,7 @@ const CategoryList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`https://star-backend-z1cm.onrender.com/categories/${id}`, {
+      await fetch(`http://localhost:3000/categories/${id}`, {
         method: "DELETE",
       });
       setCategories(categories.filter((category) => category._id !== id));
