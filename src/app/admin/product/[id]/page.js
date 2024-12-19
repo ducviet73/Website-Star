@@ -131,236 +131,236 @@ export default function ProductEdit({ params }) {
     });
 
     // Error and loading states for categories and product
-    if (categoriesError) return <p>Error fetching categories: {categoriesError.message}</p>;
-    if (!categories) return <p>Loading categories...</p>;
-   
-if (productError) {
-    if (productError.message.includes("404")) {
-      return <p>Product not found. Please check the product ID or ensure the product exists.</p>;
+    if (categoriesError) return <p>Lỗi khi tải danh mục: {categoriesError.message}</p>;
+    if (!categories) return <p>Đang tải danh mục...</p>;
+    
+    if (productError) {
+        if (productError.message.includes("404")) {
+          return <p>Sản phẩm không tìm thấy. Vui lòng kiểm tra lại ID sản phẩm hoặc đảm bảo sản phẩm tồn tại.</p>;
+        }
+        return <p>Lỗi khi tải chi tiết sản phẩm: {productError.message}</p>;
     }
-    return <p>Error fetching product details: {productError.message}</p>;
-  }
-  
-  if (!product) return <p>Loading product details...</p>;
-
+    
+    if (!product) return <p>Đang tải chi tiết sản phẩm...</p>;
+    
     return (
-        <>
-            <div className="d-flex justify-content-between">
-                <h3 className="mb-4">Edit Product</h3>
-                <Link href="/admin/product" className="btn btn-outline-secondary rounded-0">
-                    <i className="far fa-long-arrow-left"></i> Back
-                </Link>
+       
+<>
+    <div className="d-flex justify-content-between">
+        <h3 className="mb-4">Chỉnh sửa sản phẩm</h3>
+        <Link href="/admin/product" className="btn btn-outline-secondary rounded-0">
+            <i className="far fa-long-arrow-left"></i> Quay lại
+        </Link>
+    </div>
+    <form className="row" onSubmit={formik.handleSubmit} encType="multipart/form-data">
+        {/* Phần thông tin cơ bản */}
+        <div className="col-md-8 mb-4">
+            <div className="card rounded-0 border-0 shadow-sm mb-4">
+                <div className="card-body">
+                    <h6 className="pb-3 border-bottom">Thông tin cơ bản</h6>
+                    <div className="row">
+                        <div className="col mb-3">
+                            <label htmlFor="name" className="form-label">Tên *</label>
+                            <input
+                                type="text"
+                                className="form-control rounded-0"
+                                id="name"
+                                {...formik.getFieldProps('name')}
+                            />
+                            {formik.touched.name && formik.errors.name && (
+                                <div className="text-danger">{formik.errors.name}</div>
+                            )}
+                        </div>
+                        <div className="col mb-3">
+                            <label htmlFor="category" className="form-label">Danh mục *</label>
+                            <select
+                                id="category"
+                                className="form-select rounded-0"
+                                {...formik.getFieldProps('category')}
+                            >
+                                <option value="" disabled>Chọn danh mục</option>
+                                {categories.map(category => (
+                                    <option key={category._id} value={category._id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {formik.touched.category && formik.errors.category && (
+                                <div className="text-danger">{formik.errors.category}</div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <h6 className="pb-3 border-bottom">Giá</h6>
+                        <div className="col mb-3">
+                            <label htmlFor="price" className="form-label">Giá *</label>
+                            <input
+                                type="number"
+                                className="form-control rounded-0"
+                                id="price"
+                                min="0"
+                                {...formik.getFieldProps('price')}
+                            />
+                            {formik.touched.price && formik.errors.price && (
+                                <div className="text-danger">{formik.errors.price}</div>
+                            )}
+                        </div>
+                        <div className="col mb-3">
+                            <label htmlFor="sale" className="form-label">Giảm giá</label>
+                            <input
+                                type="number"
+                                className="form-control rounded-0"
+                                id="sale"
+                                min="0"
+                                {...formik.getFieldProps('sale')}
+                            />
+                            {formik.touched.sale && formik.errors.sale && (
+                                <div className="text-danger">{formik.errors.sale}</div>
+                            )}
+                        </div>
+                        <div className="col mb-3">
+                            <label htmlFor="rating" className="form-label">Đánh giá</label>
+                            <input
+                                type="number"
+                                className="form-control rounded-0"
+                                id="rating"
+                                min="0"
+                                max="5"
+                                {...formik.getFieldProps('rating')}
+                            />
+                            {formik.touched.rating && formik.errors.rating && (
+                                <div className="text-danger">{formik.errors.rating}</div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col mb-3">
+                            <label htmlFor="view" className="form-label">Số lượt xem</label>
+                            <input
+                                type="number"
+                                className="form-control rounded-0"
+                                id="view"
+                                min="0"
+                                {...formik.getFieldProps('view')}
+                            />
+                            {formik.touched.view && formik.errors.view && (
+                                <div className="text-danger">{formik.errors.view}</div>
+                            )}
+                        </div>
+                        <div className="col mb-3">
+                            <label htmlFor="inventory" className="form-label">Số lượng trong kho *</label>
+                            <input
+                                type="number"
+                                className="form-control rounded-0"
+                                id="inventory"
+                                min="0"
+                                {...formik.getFieldProps('inventory')}
+                            />
+                            {formik.touched.inventory && formik.errors.inventory && (
+                                <div className="text-danger">{formik.errors.inventory}</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <form className="row" onSubmit={formik.handleSubmit} encType="multipart/form-data">
-                {/* Basic Info Section */}
-                <div className="col-md-8 mb-4">
-                    <div className="card rounded-0 border-0 shadow-sm mb-4">
-                        <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Basic Info</h6>
-                            <div className="row">
-                                <div className="col mb-3">
-                                    <label htmlFor="name" className="form-label">Name *</label>
-                                    <input
-                                        type="text"
-                                        className="form-control rounded-0"
-                                        id="name"
-                                        {...formik.getFieldProps('name')}
-                                    />
-                                    {formik.touched.name && formik.errors.name && (
-                                        <div className="text-danger">{formik.errors.name}</div>
-                                    )}
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="category" className="form-label">Category *</label>
-                                    <select
-                                        id="category"
-                                        className="form-select rounded-0"
-                                        {...formik.getFieldProps('category')}
-                                    >
-                                        <option value="" disabled>Select a category</option>
-                                        {categories.map(category => (
-                                            <option key={category._id} value={category._id}>
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {formik.touched.category && formik.errors.category && (
-                                        <div className="text-danger">{formik.errors.category}</div>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="row">
-                                <h6 className="pb-3 border-bottom">Price</h6>
-                                <div className="col mb-3">
-                                    <label htmlFor="price" className="form-label">Price *</label>
-                                    <input
-                                        type="number"
-                                        className="form-control rounded-0"
-                                        id="price"
-                                        min="0"
-                                        {...formik.getFieldProps('price')}
-                                    />
-                                    {formik.touched.price && formik.errors.price && (
-                                        <div className="text-danger">{formik.errors.price}</div>
-                                    )}
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="sale" className="form-label">Sale</label>
-                                    <input
-                                        type="number"
-                                        className="form-control rounded-0"
-                                        id="sale"
-                                        min="0"
-                                        {...formik.getFieldProps('sale')}
-                                    />
-                                    {formik.touched.sale && formik.errors.sale && (
-                                        <div className="text-danger">{formik.errors.sale}</div>
-                                    )}
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="rating" className="form-label">Rating</label>
-                                    <input
-                                        type="number"
-                                        className="form-control rounded-0"
-                                        id="rating"
-                                        min="0"
-                                        max="5"
-                                        {...formik.getFieldProps('rating')}
-                                    />
-                                    {formik.touched.rating && formik.errors.rating && (
-                                        <div className="text-danger">{formik.errors.rating}</div>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col mb-3">
-                                    <label htmlFor="view" className="form-label">View Count</label>
-                                    <input
-                                        type="number"
-                                        className="form-control rounded-0"
-                                        id="view"
-                                        min="0"
-                                        {...formik.getFieldProps('view')}
-                                    />
-                                    {formik.touched.view && formik.errors.view && (
-                                        <div className="text-danger">{formik.errors.view}</div>
-                                    )}
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="inventory" className="form-label">Inventory *</label>
-                                    <input
-                                        type="number"
-                                        className="form-control rounded-0"
-                                        id="inventory"
-                                        min="0"
-                                        {...formik.getFieldProps('inventory')}
-                                    />
-                                    {formik.touched.inventory && formik.errors.inventory && (
-                                        <div className="text-danger">{formik.errors.inventory}</div>
-                                    )}
-                                </div>
-                            </div>
+            <div className="card rounded-0 border-0 shadow-sm">
+                <div className="card-body">
+                    <h6 className="pb-3 border-bottom">Thông Tin</h6>
+                    <div className="row">
+                        <div className="col mb-3">
+                            <label htmlFor="description" className="form-label">Mô tả</label>
+                            <textarea
+                                className="form-control rounded-0"
+                                id="description"
+                                rows="6"
+                                {...formik.getFieldProps('description')}
+                            ></textarea>
                         </div>
-                    </div>
-                    <div className="card rounded-0 border-0 shadow-sm">
-                        <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Thông Tin</h6>
-                            <div className="row">
-                                <div className="col mb-3">
-                                    <label htmlFor="description" className="form-label">Description</label>
-                                    <textarea
-                                        className="form-control rounded-0"
-                                        id="description"
-                                        rows="6"
-                                        {...formik.getFieldProps('description')}
-                                    ></textarea>
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="content" className="form-label">Content</label>
-                                    <textarea
-                                        className="form-control rounded-0"
-                                        id="content"
-                                        rows="4"
-                                        {...formik.getFieldProps('content')}
-                                    ></textarea>
-                                </div>
-                            </div>
+                        <div className="col mb-3">
+                            <label htmlFor="content" className="form-label">Nội dung</label>
+                            <textarea
+                                className="form-control rounded-0"
+                                id="content"
+                                rows="4"
+                                {...formik.getFieldProps('content')}
+                            ></textarea>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                {/* Images Section */}
-                <div className="col-md-4 mb-4">
-                    <div className="card rounded-0 border-0 shadow-sm">
-                        <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Images</h6>
-                            <label className="form-label">ảnh sản phẩm cũ</label>
-                                <img src={`https://star-backend-z1cm.onrender.com/img/${product.image}`}  className="w-50" alt="Current Product" />
-                            <div className="mb-3">
-                                <label htmlFor="image" className="form-label">Product Image *</label>
-                                <input
-                                    className="form-control rounded-0"
-                                    type="file"
-                                    id="image"
-                                    onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
-                                />
-                                <div className="bg-secondary-subtle mb-3 p-2 text-center">
-                                {formik.values.image ? (
-                                    <>
-                                        <label className="form-label">Ảnh mới</label>
-                                        <img
-                                            src={URL.createObjectURL(formik.values.image)}
-                                            className="w-50"
-                                            alt="Selected"
-                                        />
-                                    </>
-                                ) : product.image ? (
+        {/* Phần hình ảnh */}
+        <div className="col-md-4 mb-4">
+            <div className="card rounded-0 border-0 shadow-sm">
+                <div className="card-body">
+                    <h6 className="pb-3 border-bottom">Hình ảnh</h6>
+                    <label className="form-label">Ảnh sản phẩm cũ</label>
+                    <img src={`https://star-backend-z1cm.onrender.com/img/${product.image}`} className="w-50" alt="Sản phẩm hiện tại" />
+                    <div className="mb-3">
+                        <label htmlFor="image" className="form-label">Ảnh sản phẩm *</label>
+                        <input
+                            className="form-control rounded-0"
+                            type="file"
+                            id="image"
+                            onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
+                        />
+                        <div className="bg-secondary-subtle mb-3 p-2 text-center">
+                            {formik.values.image ? (
+                                <>
+                                    <label className="form-label">Ảnh mới</label>
                                     <img
-                                        src={`https://star-backend-z1cm.onrender.com/img/${product.image}`}
+                                        src={URL.createObjectURL(formik.values.image)}
                                         className="w-50"
-                                        alt="Current Product"
+                                        alt="Ảnh đã chọn"
                                     />
-                                ) : null}
-                                </div>
-                            </div>
-                            <div className="mb-3">
-                                
-                                <label htmlFor="images" className="form-label">More Product Images</label>
-                                <input
-                                    className="form-control rounded-0"
-                                    type="file"
-                                    id="images"
-                                    multiple
-                                    onChange={(e) => formik.setFieldValue('images', Array.from(e.target.files))}
+                                </>
+                            ) : product.image ? (
+                                <img
+                                    src={`https://star-backend-z1cm.onrender.com/img/${product.image}`}
+                                    className="w-50"
+                                    alt="Sản phẩm hiện tại"
                                 />
-                                <div className="bg-secondary-subtle mb-3 p-2 text-center d-flex">
-
-                                    {formik.values.images && Array.isArray(formik.values.images) ? (
-                                        formik.values.images.map((img, index) => (
-                                            <img
-                                                key={index}
-                                                src={URL.createObjectURL(img)}
-                                                className="w-25"
-                                                alt={`Selected ${index}`}
-                                            />
-                                        ))
-                                    ) : product.images && Array.isArray(product.images) ? (
-                                        product.images.map((img, index) => (
-                                            <img
-                                                key={index}
-                                                src={img}
-                                                className="w-25"
-                                                alt={`Current ${index}`}
-                                            />
-                                        ))
-                                    ) : null}
-                                </div>
-                            </div>
+                            ) : null}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-lg rounded-0 mt-4 w-100">Update Product</button>
+                    <div className="mb-3">
+                        <label htmlFor="images" className="form-label">Hình ảnh thêm</label>
+                        <input
+                            className="form-control rounded-0"
+                            type="file"
+                            id="images"
+                            multiple
+                            onChange={(e) => formik.setFieldValue('images', Array.from(e.target.files))}
+                        />
+                        <div className="bg-secondary-subtle mb-3 p-2 text-center d-flex">
+                            {formik.values.images && Array.isArray(formik.values.images) ? (
+                                formik.values.images.map((img, index) => (
+                                    <img
+                                        key={index}
+                                        src={URL.createObjectURL(img)}
+                                        className="w-25"
+                                        alt={`Ảnh đã chọn ${index}`}
+                                    />
+                                ))
+                            ) : product.images && Array.isArray(product.images) ? (
+                                product.images.map((img, index) => (
+                                    <img
+                                        key={index}
+                                        src={img}
+                                        className="w-25"
+                                        alt={`Sản phẩm hiện tại ${index}`}
+                                    />
+                                ))
+                            ) : null}
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </>
+            </div>
+            <button type="submit" className="btn btn-primary btn-lg rounded-0 mt-4 w-100">Cập nhật sản phẩm</button>
+        </div>
+    </form>
+</>
+
     );
 }

@@ -113,6 +113,7 @@ const CheckoutPage = () => {
         }
     };
 
+
     return (
         <div className="container my-5">
             <h1>Thanh Toán</h1>

@@ -3,49 +3,48 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const AdminOrderManagement = () => {
-  const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [status, setStatus] = useState("");
-  const [date, setDate] = useState("");
-  const [totalIncome, setTotalIncome] = useState(0);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+const QuanLyDonHangAdmin = () => {
+  const [donHangs, setDonHangs] = useState([]);
+  const [donHangChon, setDonHangChon] = useState(null);
+  const [trangThai, setTrangThai] = useState("");
+  const [ngay, setNgay] = useState("");
+  const [thuNhapTong, setThuNhapTong] = useState(0);
+  const [donHangsLoc, setDonHangsLoc] = useState([]);
+  const [loi, setLoi] = useState("");
+  const [dangTai, setDangTai] = useState(true);
 
-  // Fetch orders and total income on mount
+  // Lấy dữ liệu đơn hàng và thu nhập tổng khi trang được tải
   useEffect(() => {
-    const fetchOrders = async () => {
+    const layDonHangs = async () => {
       try {
         const response = await axios.get("https://star-backend-z1cm.onrender.com/orders");
-        setOrders(response.data);
-        setFilteredOrders(response.data);
+        setDonHangs(response.data);
+        setDonHangsLoc(response.data);
       } catch (error) {
-        console.error("Error fetching orders:", error);
-        setError("Failed to fetch orders");
+        console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
+        setLoi("Không thể lấy dữ liệu đơn hàng");
       } finally {
-        setIsLoading(false);
+        setDangTai(false);
       }
     };
 
-    const fetchTotalIncome = async () => {
+    const layThuNhapTong = async () => {
       try {
         const response = await axios.get("https://star-backend-z1cm.onrender.com/orders/incomes/total");
-        setTotalIncome(response.data.total);
+        setThuNhapTong(response.data.total);
       } catch (error) {
-        console.error("Error fetching total income:", error);
-        setError("Failed to fetch total income");
+        console.error("Lỗi khi lấy thu nhập tổng:", error);
+        setLoi("Không thể lấy thu nhập tổng");
       }
     };
 
-    fetchOrders();
-    fetchTotalIncome();
+    layDonHangs();
+    layThuNhapTong();
   }, []);
 
-  // Update order status
-  const handleStatusChange = async (orderId, newStatus) => {
+  // Cập nhật trạng thái đơn hàng
+  const handleThayDoiTrangThai = async (orderId, newStatus) => {
     try {
-      console.log("Updating order", orderId, "to status", newStatus); // Debugging log
       const response = await fetch(`https://star-backend-z1cm.onrender.com/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
@@ -55,189 +54,191 @@ const AdminOrderManagement = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
+        throw new Error(`Phản hồi mạng không hợp lệ: ${response.status}`);
       }
 
       const updatedOrder = await response.json();
-      setOrders(orders.map((order) =>
+      setDonHangs(donHangs.map((order) =>
         order._id === orderId ? { ...order, status: newStatus } : order
       ));
     } catch (error) {
-      console.error("Error updating order status:", error);
-      setError(`Failed to update status: ${error.message}`);
+      console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
+      setLoi(`Không thể cập nhật trạng thái: ${error.message}`);
     }
   };
 
-  // Delete order
-  const handleDeleteOrder = async (orderId) => {
-    if (window.confirm("Are you sure you want to delete this order?")) {
+  // Xóa đơn hàng
+  const handleXoaDonHang = async (orderId) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa đơn hàng này?")) {
       try {
         await axios.delete(`https://star-backend-z1cm.onrender.com/orders/${orderId}`);
-        setOrders(orders.filter((order) => order._id !== orderId));
-        if (selectedOrder && selectedOrder._id === orderId) {
-          setSelectedOrder(null);
+        setDonHangs(donHangs.filter((order) => order._id !== orderId));
+        if (donHangChon && donHangChon._id === orderId) {
+          setDonHangChon(null);
         }
       } catch (error) {
-        console.error("Error deleting order:", error);
-        setError("Failed to delete order");
+        console.error("Lỗi khi xóa đơn hàng:", error);
+        setLoi("Không thể xóa đơn hàng");
       }
     }
   };
 
-  // Filter orders by status
-  const handleFilterByStatus = async () => {
+  // Lọc đơn hàng theo trạng thái
+  const handleLocTheoTrangThai = async () => {
     try {
-      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/status/${status}`);
-      setFilteredOrders(response.data);
+      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/status/${trangThai}`);
+      setDonHangsLoc(response.data);
     } catch (error) {
-      console.error("Error fetching orders by status:", error);
-      setError("Failed to fetch orders by status");
+      console.error("Lỗi khi lọc đơn hàng theo trạng thái:", error);
+      setLoi("Không thể lọc đơn hàng theo trạng thái");
     }
   };
 
-  // Filter orders by date
-  const handleFilterByDate = async () => {
+  // Lọc đơn hàng theo ngày
+  const handleLocTheoNgay = async () => {
     try {
-      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/date/${date}`);
-      setFilteredOrders(response.data);
+      const response = await axios.get(`https://star-backend-z1cm.onrender.com/orders/date/${ngay}`);
+      setDonHangsLoc(response.data);
     } catch (error) {
-      console.error("Error fetching orders by date:", error);
-      setError("Failed to fetch orders by date");
+      console.error("Lỗi khi lọc đơn hàng theo ngày:", error);
+      setLoi("Không thể lọc đơn hàng theo ngày");
     }
   };
 
-  // Loading Spinner
-  if (isLoading)
+  // Hiển thị loading khi đang tải
+  if (dangTai)
     return (
       <div className="d-flex justify-content-center mt-5">
         <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only">Đang tải...</span>
         </div>
       </div>
     );
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Order Management</h1>
-      {error && <div className="alert alert-danger">{error}</div>}
+      <h1 className="text-center mb-4">Quản Lý Đơn Hàng</h1>
+      {loi && <div className="alert alert-danger">{loi}</div>}
 
-      {/* Total Income Section */}
+      {/* Phần Thu Nhập Tổng */}
       <div className="row mb-4">
         <div className="col-md-6">
-          <h2>Total Income</h2>
-          <p className="h4">{totalIncome.toLocaleString()} đ</p>
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h2>Thu Nhập Tổng</h2>
+              <p className="h4">{thuNhapTong.toLocaleString()} đ</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Filter Section */}
+      {/* Phần Lọc Đơn Hàng */}
       <div className="row mb-4">
         <div className="col-md-6">
-          <h3>Filter Orders</h3>
+          <h3>Lọc Đơn Hàng</h3>
           <div className="mb-3">
             <select
               className="form-select"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              value={trangThai}
+              onChange={(e) => setTrangThai(e.target.value)}
             >
-              <option value="">Select Status</option>
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="">Chọn Trạng Thái</option>
+              <option value="pending">Đang Chờ</option>
+              <option value="processing">Đang Xử Lý</option>
+              <option value="shipped">Đã Gửi</option>
+              <option value="delivered">Đã Giao</option>
+              <option value="cancelled">Đã Hủy</option>
             </select>
-            <button className="btn btn-primary mt-2" onClick={handleFilterByStatus}>
-              Filter by Status
+            <button className="btn btn-primary mt-2" onClick={handleLocTheoTrangThai}>
+              Lọc theo Trạng Thái
             </button>
           </div>
           <div className="mb-3">
             <input
               type="date"
               className="form-control"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={ngay}
+              onChange={(e) => setNgay(e.target.value)}
             />
-            <button className="btn btn-primary mt-2" onClick={handleFilterByDate}>
-              Filter by Date
+            <button className="btn btn-primary mt-2" onClick={handleLocTheoNgay}>
+              Lọc theo Ngày
             </button>
           </div>
         </div>
       </div>
 
-      {/* Orders Table */}
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Total Amount</th>
-            <th>Shipping Address</th>
-            <th>Payment Method</th>
-            <th>Status</th>
-            <th>Update Status</th>
-            <th>Details</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredOrders.map((order) => (
-            <tr key={order._id}>
-              <td>{order._id}</td>
-              <td>{order.totalAmount.toFixed(2)} đ</td>
-              <td>
-                {order.shippingAddress.street}, {order.shippingAddress.ward}, {order.shippingAddress.district}, {order.shippingAddress.city}
-              </td>
-              <td>{order.paymentMethod}</td>
-              <td>{order.status}</td>
-              <td>
-                <select
-                  className="form-select"
-                  value={order.status}
-                  onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="processing">Processing</option>
-                  <option value="shipped">Shipped</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
-              </td>
-              <td>
-                <button className="btn btn-info" onClick={() => setSelectedOrder(order)}>
-                  View Details
-                </button>
-              </td>
-              <td>
-                <button className="btn btn-danger" onClick={() => handleDeleteOrder(order._id)}>
-                  Delete
-                </button>
-              </td>
+      {/* Bảng Đơn Hàng */}
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tổng Tiền</th>
+              <th>Địa Chỉ Giao Hàng</th>
+              <th>Phương Thức Thanh Toán</th>
+              <th>Trạng Thái</th>
+              <th>Cập Nhật Trạng Thái</th>
+              <th>Chi Tiết</th>
+              <th>Thao Tác</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {donHangsLoc.map((order) => (
+              <tr key={order._id}>
+                <td>{order._id}</td>
+                <td>{order.totalAmount.toFixed(2)} đ</td>
+                <td>
+                  {order.shippingAddress.street}, {order.shippingAddress.ward}, {order.shippingAddress.district}, {order.shippingAddress.city}
+                </td>
+                <td>{order.paymentMethod}</td>
+                <td>{order.status}</td>
+                <td>
+                  <select
+                    className="form-select"
+                    value={order.status}
+                    onChange={(e) => handleThayDoiTrangThai(order._id, e.target.value)}
+                  >
+                    <option value="">Chọn Trạng Thái</option>
+                    <option value="pending">Đang Chờ</option>
+                    <option value="processing">Đang Xử Lý</option>
+                    <option value="shipped">Đã Gửi</option>
+                    <option value="delivered">Đã Giao</option>
+                    <option value="cancelled">Đã Hủy</option>
+                  </select>
+                </td>
+                <td>
+                  <button className="btn btn-info" onClick={() => setDonHangChon(order)}>
+                    Xem Chi Tiết
+                  </button>
+                </td>
+                <td>
+                  <button className="btn btn-danger" onClick={() => handleXoaDonHang(order._id)}>
+                    Xóa
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Order Details Modal */}
-      {selectedOrder && (
+      {/* Modal Chi Tiết Đơn Hàng */}
+      {donHangChon && (
         <div className="mt-4">
-          <h2>Order Details</h2>
+          <h2>Chi Tiết Đơn Hàng</h2>
           <ul>
-            {selectedOrder.details.map((product) => (
+            {donHangChon.details.map((product) => (
               <li key={product._id}>
-                <strong>Product Name:</strong> {product.name} <br />
-                <strong>Quantity:</strong> {product.quantity} <br />
-                <strong>Price:</strong> {product.price.toFixed(2)} đ
+                <strong>Tên Sản Phẩm:</strong> {product.name} <br />
+                <strong>Số Lượng:</strong> {product.quantity} <br />
+                <strong>Giá:</strong> {product.price.toLocaleString()} đ
               </li>
             ))}
           </ul>
-          <button className="btn btn-secondary mt-3" onClick={() => setSelectedOrder(null)}>
-            Close Details
-          </button>
         </div>
       )}
     </div>
   );
 };
 
-export default AdminOrderManagement;
-    
+export default QuanLyDonHangAdmin;

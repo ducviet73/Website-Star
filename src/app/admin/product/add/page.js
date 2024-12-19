@@ -5,23 +5,23 @@ import * as Yup from 'yup';
 import useSWR from 'swr';
 import Link from 'next/link';
 
-// Fetcher function with error handling
+// Hàm Fetcher với xử lý lỗi
 const fetcher = async (url) => {
     try {
         const response = await fetch(url);
         if (!response.ok) {
             const text = await response.text();
-            console.error('Error response:', text);
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error('Lỗi phản hồi:', text);
+            throw new Error(`Lỗi HTTP! mã lỗi: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
-        console.error('Fetching error:', error);
+        console.error('Lỗi khi fetch:', error);
         throw error;
     }
 };
 
-// Validation schema with Yup
+// Schema xác thực với Yup
 const validationSchema = Yup.object({
     name: Yup.string()
         .matches(/^[A-Z][a-z]*(?:[\s.,!?'-][A-Z][a-z]*)*$/, 'Tên phải bắt đầu bằng chữ cái viết hoa sau mỗi khoảng trắng và có thể chứa dấu câu')
@@ -55,10 +55,10 @@ const validationSchema = Yup.object({
 });
 
 export default function ProductAdd() {
-    // Fetch categories
+    // Lấy danh mục
     const { data: categories, error: categoriesError } = useSWR("https://star-backend-z1cm.onrender.com/categories", fetcher);
 
-    // Formik setup
+    // Cấu hình Formik
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -94,7 +94,7 @@ export default function ProductAdd() {
                 data.append('images', file);
             });
     
-            console.log('FormData to be sent:', data);
+            console.log('FormData sẽ gửi:', data);
     
             try {
                 const response = await fetch('https://star-backend-z1cm.onrender.com/products', {
@@ -104,42 +104,42 @@ export default function ProductAdd() {
     
                 if (!response.ok) {
                     const text = await response.text();
-                    console.error('Error response:', text);
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    console.error('Lỗi phản hồi:', text);
+                    throw new Error(`Lỗi HTTP! mã lỗi: ${response.status}`);
                 }
     
                 const result = await response.json();
-                console.log('Product added successfully:', result);
+                console.log('Sản phẩm đã được thêm thành công:', result);
                 alert('Sản phẩm đã được thêm thành công!');
                 resetForm(); 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Lỗi:', error);
                 alert('Đã xảy ra lỗi khi thêm sản phẩm. Vui lòng thử lại.');
+            }
         }
-    }
     });
-    
-    // Error and loading states for categories
-    if (categoriesError) return <p>Error fetching categories: {categoriesError.message}</p>;
-    if (!categories) return <p>Loading categories...</p>;
+
+    // Trạng thái lỗi và tải danh mục
+    if (categoriesError) return <p>Lỗi khi lấy danh mục: {categoriesError.message}</p>;
+    if (!categories) return <p>Đang tải danh mục...</p>;
 
     return (
         <>
             <div className="d-flex justify-content-between">
-                <h3 className="mb-4">Add Product</h3>
+                <h3 className="mb-4">Thêm Sản Phẩm</h3>
                 <Link href="/admin/product" className="btn btn-outline-secondary rounded-0">
-                    <i className="far fa-long-arrow-left"></i> Back
+                    <i className="far fa-long-arrow-left"></i> Quay lại
                 </Link>
             </div>
             <form className="row" onSubmit={formik.handleSubmit} encType="multipart/form-data">
-                {/* Basic Info Section */}
+                {/* Phần Thông Tin Cơ Bản */}
                 <div className="col-md-8 mb-4">
                     <div className="card rounded-0 border-0 shadow-sm mb-4">
                         <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Basic Info</h6>
+                            <h6 className="pb-3 border-bottom">Thông Tin Cơ Bản</h6>
                             <div className="row">
                                 <div className="col mb-3">
-                                    <label htmlFor="name" className="form-label">Name *</label>
+                                    <label htmlFor="name" className="form-label">Tên *</label>
                                     <input
                                         type="text"
                                         className="form-control rounded-0"
@@ -151,13 +151,13 @@ export default function ProductAdd() {
                                     )}
                                 </div>
                                 <div className="col mb-3">
-                                    <label htmlFor="category" className="form-label">Category *</label>
+                                    <label htmlFor="category" className="form-label">Danh Mục *</label>
                                     <select
                                         id="category"
                                         className="form-select rounded-0"
                                         {...formik.getFieldProps('category')}
                                     >
-                                        <option value="" disabled>Select a category</option>
+                                        <option value="" disabled>Chọn danh mục</option>
                                         {categories.map(category => (
                                             <option key={category._id} value={category._id}>
                                                 {category.name}
@@ -170,9 +170,9 @@ export default function ProductAdd() {
                                 </div>
                             </div>
                             <div className="row">
-                                <h6 className="pb-3 border-bottom">Price</h6>
+                                <h6 className="pb-3 border-bottom">Giá</h6>
                                 <div className="col mb-3">
-                                    <label htmlFor="price" className="form-label">Price *</label>
+                                    <label htmlFor="price" className="form-label">Giá *</label>
                                     <input
                                         type="number"
                                         className="form-control rounded-0"
@@ -185,7 +185,7 @@ export default function ProductAdd() {
                                     )}
                                 </div>
                                 <div className="col mb-3">
-                                    <label htmlFor="sale" className="form-label">Sale</label>
+                                    <label htmlFor="sale" className="form-label">Khuyến Mãi</label>
                                     <input
                                         type="number"
                                         className="form-control rounded-0"
@@ -198,7 +198,7 @@ export default function ProductAdd() {
                                     )}
                                 </div>
                                 <div className="col mb-3">
-                                    <label htmlFor="rating" className="form-label">Rating</label>
+                                    <label htmlFor="rating" className="form-label">Đánh Giá</label>
                                     <input
                                         type="number"
                                         className="form-control rounded-0"
@@ -214,7 +214,7 @@ export default function ProductAdd() {
                             </div>
                             <div className="row">
                                 <div className="col mb-3">
-                                    <label htmlFor="view" className="form-label">View Count</label>
+                                    <label htmlFor="view" className="form-label">Số Lượt Xem</label>
                                     <input
                                         type="number"
                                         className="form-control rounded-0"
@@ -227,7 +227,7 @@ export default function ProductAdd() {
                                     )}
                                 </div>
                                 <div className="col mb-3">
-                                    <label htmlFor="inventory" className="form-label">Inventory *</label>
+                                    <label htmlFor="inventory" className="form-label">Kho Hàng *</label>
                                     <input
                                         type="number"
                                         className="form-control rounded-0"
@@ -242,78 +242,73 @@ export default function ProductAdd() {
                             </div>
                         </div>
                     </div>
+                </div>
+                {/* Phần Mô Tả */}
+                <div className="col-md-4 mb-4">
                     <div className="card rounded-0 border-0 shadow-sm">
                         <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Thông Tin</h6>
-                            <div className="row">
-                                <div className="col mb-3">
-                                    <label htmlFor="description" className="form-label">Description</label>
-                                    <textarea
-                                        className="form-control rounded-0"
-                                        id="description"
-                                        rows="6"
-                                        {...formik.getFieldProps('description')}
-                                    ></textarea>
-                                </div>
-                                <div className="col mb-3">
-                                    <label htmlFor="content" className="form-label">Content</label>
-                                    <textarea
-                                        className="form-control rounded-0"
-                                        id="content"
-                                        rows="4"
-                                        {...formik.getFieldProps('content')}
-                                    ></textarea>
-                                </div>
+                            <h6 className="pb-3 border-bottom">Mô Tả</h6>
+                            <div className="mb-3">
+                                <label htmlFor="description" className="form-label">Mô Tả Ngắn</label>
+                                <textarea
+                                    className="form-control rounded-0"
+                                    id="description"
+                                    rows="3"
+                                    {...formik.getFieldProps('description')}
+                                />
+                                {formik.touched.description && formik.errors.description && (
+                                    <div className="text-danger">{formik.errors.description}</div>
+                                )}
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="content" className="form-label">Nội Dung Chi Tiết</label>
+                                <textarea
+                                    className="form-control rounded-0"
+                                    id="content"
+                                    rows="5"
+                                    {...formik.getFieldProps('content')}
+                                />
+                                {formik.touched.content && formik.errors.content && (
+                                    <div className="text-danger">{formik.errors.content}</div>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Images Section */}
                 <div className="col-md-4 mb-4">
                     <div className="card rounded-0 border-0 shadow-sm">
                         <div className="card-body">
-                            <h6 className="pb-3 border-bottom">Images</h6>
+                            <h6 className="pb-3 border-bottom">Ảnh Sản Phẩm</h6>
                             <div className="mb-3">
-                                <label htmlFor="image" className="form-label">Product Image *</label>
+                                <label htmlFor="image" className="form-label">Ảnh Chính</label>
                                 <input
-                                    className="form-control rounded-0"
                                     type="file"
+                                    className="form-control"
                                     id="image"
-                                    onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
-                                    required
+                                    onChange={(event) =>
+                                        formik.setFieldValue("image", event.currentTarget.files[0])
+                                    }
                                 />
-                                <div className="bg-secondary-subtle mb-3 p-2 text-center">
-                                    {formik.values.image && (
-                                        <img src={URL.createObjectURL(formik.values.image)} className="w-50" alt="Selected" />
-                                    )}
-                                </div>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="images" className="form-label">More Product Images</label>
+                                <label htmlFor="images" className="form-label">Ảnh Khác</label>
                                 <input
-                                    className="form-control rounded-0"
                                     type="file"
+                                    className="form-control"
                                     id="images"
                                     multiple
-                                    onChange={(e) => formik.setFieldValue('images', Array.from(e.target.files))}
+                                    onChange={(event) =>
+                                        formik.setFieldValue("images", Array.from(event.currentTarget.files))
+                                    }
                                 />
-                                <div className="bg-secondary-subtle mb-3 p-2 text-center d-flex">
-                                    {formik.values.images && Array.isArray(formik.values.images) ? (
-                                        formik.values.images.map((img, index) => (
-                                            <img
-                                                key={index}
-                                                src={URL.createObjectURL(img)}
-                                                className="w-25"
-                                                alt={`Selected ${index}`}
-                                            />
-                                        ))
-                                    ) : null}
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-lg rounded-0 mt-4 w-100">Create Product</button>
+                </div>
+                <div className="col-12">
+                    <button type="submit" className="btn btn-primary rounded-0 w-100">
+                        Thêm Sản Phẩm
+                    </button>
                 </div>
             </form>
         </>
