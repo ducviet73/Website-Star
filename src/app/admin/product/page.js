@@ -128,11 +128,11 @@ export default function Product() {
                 return (
                   <tr key={_id}>
                     <td style={{ width: "64px" }}>
-                      <img
-                        src={`https://star-backend-z1cm.onrender.com/img/${image}?t=${new Date().getTime()}`}
-                        alt={name}
-                        className="img-thumbnail"
-                      />
+                    <img
+                 src={image.startsWith('http') ? image : `https://star-backend-z1cm.onrender.com/${image}` }
+                 alt={name}                         className="img-thumbnail"
+
+              />
                     </td>
                     <td className="text-start">
                       <strong>{name}</strong>
